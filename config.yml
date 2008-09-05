@@ -1,0 +1,7 @@
+database:
+  adapter: mysql
+  database: redstarv2_trunk
+  username: root
+  password: Awycehe2iS
+  socket: /var/run/mysqld/mysqld.sock
+ 
