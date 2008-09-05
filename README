@@ -3,3 +3,11 @@ and Converge.
 
 This gem acts as an interface between Courier's authlib with Invision's members
 database and allows to authenticate with authlib against Invision's DB.
+
+To run it you have to take sample config file included in the gem sources and
+modify it to match your environment. Then configure your courier-authlib
+to run ipcauthpipe with full path to your config file as a parameter, i.e.:
+/usr/local/ipcauthpipe /etc/ipcauthpipe-config.yml
+
+See more about Courier's authpipe authentication module and protocol at:
+http://www.courier-mta.org/authlib/README_authlib.html#authpipe
