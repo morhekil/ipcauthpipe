@@ -1,0 +1,5 @@
+This is implementation of Courier's authpipe protocol over Invision Power Board
+and Converge.
+
+This gem acts as an interface between Courier's authlib with Invision's members
+database and allows to authenticate with authlib against Invision's DB.
