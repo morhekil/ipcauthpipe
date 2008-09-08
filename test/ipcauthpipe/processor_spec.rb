@@ -29,10 +29,8 @@ describe 'Request processor' do
     # Set up a fake Auth handler
     module IpcAuthpipe
       module Handler
-        module Auth
-          class << self
-            def process
-            end
+        class Auth
+          def self.process
           end
         end
       end
