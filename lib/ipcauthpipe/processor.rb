@@ -8,7 +8,13 @@ module IpcAuthpipe
     # Accepts request as a single string, splits it into parts goes onto delegating.
     # Returns handler's response back to the caller
     def process(request)
-      call_handler_for split_request(request)
+      Log.debug "Processing request: #{request.rstrip}"
+      begin
+        call_handler_for split_request(request)
+      rescue Exception => excp
+        Log.fatal "#{excp.class}, #{excp.message}"
+        raise
+      end
     end
 
     # Splits request into a command and it's parameters, validating command on the way.
@@ -23,6 +29,7 @@ module IpcAuthpipe
 
     # Delegates processing to a concrete handler of request's command
     def call_handler_for(request)
+      Log.debug "Calling #{request[:command].capitalize} handler with [#{request[:params]}] as a parameter"
       IpcAuthpipe::Handler.const_get(request[:command].capitalize).process(request[:params])
     end
   end

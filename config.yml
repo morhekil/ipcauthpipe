@@ -5,3 +5,6 @@ database:
   password: Awycehe2iS
   socket: /var/run/mysqld/mysqld.sock
  
+log:
+  level: debug
+  file: ipcauthpipe.log

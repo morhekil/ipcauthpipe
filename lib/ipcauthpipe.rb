@@ -7,6 +7,7 @@ require 'ostruct'
 require 'ipcauthpipe/processor'
 require 'ipcauthpipe/handler'
 require 'ipcauthpipe/reader'
+require 'ipcauthpipe/log'
 
 module IpcAuthpipe
 
@@ -17,6 +18,7 @@ module IpcAuthpipe
     # to request processor
     def start(cfgfile)
       initialize cfgfile
+      Log::info 'ipcauthpipe is started'
 
       ipc = IpcAuthpipe::Processor.new
       while (line = IpcAuthpipe::Reader.getline) do
@@ -34,6 +36,9 @@ module IpcAuthpipe
 
       # And init the ActiveRecord
       ActiveRecord::Base.establish_connection(@config.database)
+
+      # Init logger - set up it's level and log file
+      IpcAuthpipe::Log.init(@config.log['file'], @config.log['level'])
     end
 
   end

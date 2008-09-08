@@ -14,9 +14,15 @@ describe 'Request processor' do
     @processor.split_request('ENUMERATE ').should == { :command => 'ENUMERATE', :params => nil}
   end
 
-  it "should raise an exception for invalid request" do
+  it "should raise an exception for invalid request and log it" do
     lambda { @processor.split_request('FOOBAR') }.should raise_error(RuntimeError)
     lambda { @processor.split_request('NO . COMMAND') }.should raise_error(RuntimeError)
+  end
+
+  it "should log failed requests" do
+    IpcAuthpipe::Log.should_receive(:debug).once
+    IpcAuthpipe::Log.should_receive(:fatal).once
+    lambda { @processor.process('FOOBAR') }.should raise_error(RuntimeError)
   end
 
   it "should delegate processing to the command's handler" do
@@ -32,6 +38,8 @@ describe 'Request processor' do
       end
     end
 
+    # Expect the action to be logged
+    IpcAuthpipe::Log.should_receive(:debug).once
     # And try to call it
     IpcAuthpipe::Handler::Auth.should_receive(:process).with('53').once
     @processor.call_handler_for(:command => 'AUTH', :params => '53')
