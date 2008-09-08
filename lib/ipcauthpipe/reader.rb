@@ -1,3 +1,5 @@
+require 'readbytes'
+
 module IpcAuthpipe
 
   # Abstracting read operations to substitute them with mocks in our tests and also
