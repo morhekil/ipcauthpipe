@@ -6,6 +6,7 @@ require 'ostruct'
 
 require 'ipcauthpipe/processor'
 require 'ipcauthpipe/handler'
+require 'ipcauthpipe/reader'
 
 module IpcAuthpipe
 
@@ -18,7 +19,7 @@ module IpcAuthpipe
       initialize cfgfile
 
       ipc = IpcAuthpipe::Processor.new
-      while (line = STDIN.gets("\n")) do
+      while (line = IpcAuthpipe::Reader.getline) do
         puts ipc.process(line) unless line.empty?
       end
     end
