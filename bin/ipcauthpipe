@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/ipcauthpipe'
+require File.dirname(__FILE__) + '/../lib/ipcauthpipe'
 
 # Start IpcAuthpipe with config from the first CLI argument of with ../config.yml as a default one
 IpcAuthpipe.start( ARGV[0] || "#{File.dirname(__FILE__)}/../config.yml" )
