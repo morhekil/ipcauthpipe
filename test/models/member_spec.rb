@@ -6,6 +6,10 @@ require 'models/member_converge'
 
 describe 'Member' do
 
+  before(:all) do
+    IpcAuthpipe::Log.logger = stub_everything
+  end
+
   before(:each) do
     Member.delete_all
     @tester_converge = mock('member_converge') #,

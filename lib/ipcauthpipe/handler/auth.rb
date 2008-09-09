@@ -68,6 +68,7 @@ module IpcAuthpipe
 
       # LOGIN type authentication handler
       def validate_with_login(authdata)
+        Log.debug "Authenticating through type LOGIN with #{authdata.inspect}"
         Member.find_by_name_and_password(authdata[:username], authdata[:password]).to_authpipe
       end
     end
