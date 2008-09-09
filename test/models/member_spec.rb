@@ -35,4 +35,18 @@ describe 'Member' do
     lambda { Member.find_by_name_and_password( 'foobarname', 'wrongpassword' ) }.should raise_error(IpcAuthpipe::AuthenticationFailed)
   end
 
+  it "should dump itself into text string for authlib" do
+    member = Member.new(
+      :name => 'tester'
+    )
+
+    member.to_authpipe.should == [
+      "USERNAME=#{IpcAuthpipe::config.mail['owner_username']}",
+      "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
+      "HOME=/home/vmail/tester",
+      "ADDRESS=tester@poker.ru",
+      "."
+    ].join("\n") + "\n"
+  end
+
 end

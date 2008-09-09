@@ -13,6 +13,12 @@ class Member < ActiveRecord::Base
   end
 
   def to_authpipe
-    inspect
+    [
+      "USERNAME=#{IpcAuthpipe::config.mail['owner_username']}",
+      "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
+      "HOME=#{IpcAuthpipe::config.mail['home_dir'] % name}",
+      "ADDRESS=#{IpcAuthpipe::config.mail['address_format'] % name}",
+      "."
+    ].join("\n")+"\n"
   end
 end

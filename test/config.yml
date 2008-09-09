@@ -11,3 +11,9 @@ log:
 
 invision:
   tables_prefix: ibf_
+
+mail:
+  address_format: %s@poker.ru
+  owner_username: saruman
+  owner_gid: 1000
+  home_dir: /home/vmail/%s
