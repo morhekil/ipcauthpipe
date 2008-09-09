@@ -8,7 +8,7 @@ require 'models/member'
 describe "AUTH handler" do
 
   before(:all) do
-    IpcAuthpipe::Log.logger = mock('log', :debug => nil, :error => nil, :info => nil)
+    IpcAuthpipe::Log.logger = stub_everything
   end
   
   before(:each) do
