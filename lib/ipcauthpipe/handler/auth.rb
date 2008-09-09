@@ -60,12 +60,15 @@ module IpcAuthpipe
           # requested authentication type is not supported
           Log.error "Unsupported authentication type requested with #{authdata.inspect}"
           "FAIL\n"
+        rescue AuthenticationFailed
+          Log.info "Authentication failed for #{authdata.inspect}"
+          "FAIL\n"
         end
       end
 
       # LOGIN type authentication handler
       def validate_with_login(authdata)
-        "LOGIN SUCCESS #{authdata.inspect}"
+        Member.find_by_name_and_password(authdata[:username], authdata[:password]).to_authpipe
       end
     end
 

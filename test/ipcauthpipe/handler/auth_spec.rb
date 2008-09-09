@@ -3,11 +3,12 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'ipcauthpipe/handler'
 require 'ipcauthpipe/handler/auth'
 require 'ipcauthpipe/reader'
+require 'models/member'
 
 describe "AUTH handler" do
 
   before(:all) do
-    IpcAuthpipe::Log.logger = mock('log', :debug => nil, :error => nil)
+    IpcAuthpipe::Log.logger = mock('log', :debug => nil, :error => nil, :info => nil)
   end
   
   before(:each) do
@@ -57,6 +58,25 @@ describe "AUTH handler" do
     @auth.should_receive(:validate_with_login).once.with(authdata).and_return('LOGIN-success')
     @auth.validate(authdata).should == "LOGIN-success"
   end
+
+  it "should return FAIL for failed authentication" do
+    authdata = { :method => 'login', :username => 'vasya', :password => 'parol' }
+    @auth.should_receive(:validate_with_login).once.with(authdata).and_raise(IpcAuthpipe::AuthenticationFailed)
+    @auth.validate(authdata).should == "FAIL\n"
+  end
+
+  describe "with LOGIN auth type" do
+
+    it "should find member and return it formatted" do
+      member = mock('member')
+      Member.should_receive(:find_by_name_and_password).with('vasya', 'parol').once.and_return(member)
+      member.should_receive(:to_authpipe).once.and_return("TEXT\nDUMP\nUSER\n.")
+
+      @auth.validate_with_login(:username => 'vasya', :password => 'parol').should == "TEXT\nDUMP\nUSER\n."
+    end
+
+  end
+
 
 #  it "should detect authentication method being used" do
 #    IpcAuthpipe::Handler::Auth.

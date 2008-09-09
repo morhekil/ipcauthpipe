@@ -1,13 +1,13 @@
 database:
   adapter: mysql
-  database: pokerru_mail
+  database: pokerru_mail_test
   username: root
   password: Awycehe2iS
   socket: /var/run/mysqld/mysqld.sock
 
 log:
   level: debug
-  file: ipcauthpipe.log
+  file: ipcauthpipe_test.log
 
 invision:
   tables_prefix: ibf_
