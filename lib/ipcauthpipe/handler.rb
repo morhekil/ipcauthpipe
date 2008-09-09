@@ -18,3 +18,6 @@ end
 
 # Concrete handlers are following
 require 'ipcauthpipe/handler/auth'
+require 'ipcauthpipe/handler/pre'
+require 'ipcauthpipe/handler/passwd'
+require 'ipcauthpipe/handler/enumerate'
