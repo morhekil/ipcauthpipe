@@ -12,16 +12,32 @@ Gem::Specification.new do |s|
   s.email = "morhekil@morhekil.net"
   s.homepage = "http://twitter.com/morhekil"
 
-  s.files = Dir['lib/*.rb'] +
-    Dir['lib/ipcauthpipe/*.rb'] +
-    Dir['lib/ipcauthpipe/handler/*.rb'] +
-    Dir['lib/models/*.rb'] +
-    ['bin/ipcauthpipe', 'ipcauthpipe.gemspec', 'README', 'config.yml']
+  s.files = ['lib/ipcauthpipe/handler/auth.rb',
+    'lib/ipcauthpipe/handler/enumerate.rb',
+    'lib/ipcauthpipe/handler/passwd.rb',
+    'lib/ipcauthpipe/handler/pre.rb',
+    'lib/ipcauthpipe/handler.rb',
+    'lib/ipcauthpipe/log.rb',
+    'lib/ipcauthpipe/processor.rb',
+    'lib/ipcauthpipe/reader.rb',
+    'lib/models/member.rb',
+    'lib/models/member_converge.rb',
+    'lib/ipcauthpipe.rb',
+    'bin/ipcauthpipe',
+    'ipcauthpipe.gemspec',
+    'README',
+    'config.yml'
+  ]
 
-  s.test_files = ["test/config.yml", "test/spec_helper.rb"] +
-    Dir['test/ipcauthpipe/*.rb'] +
-    Dir['test/ipcauthpipe/handler/*.rb'] +
-    Dir['test/models/*.rb']
+  s.test_files = ['test/ipcauthpipe/handler/auth_spec.rb',
+    'test/ipcauthpipe/handler/pre_spec.rb',
+    'test/ipcauthpipe/log_spec.rb',
+    'test/ipcauthpipe/processor_spec.rb',
+    'test/models/member_spec.rb',
+    'test/models/member_converge_spec.rb',
+    'test/spec_helper.rb',
+    'test/config.yml'
+  ]
 
   s.bindir = 'bin'
   s.executables = ['ipcauthpipe']
