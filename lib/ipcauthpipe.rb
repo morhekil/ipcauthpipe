@@ -26,7 +26,10 @@ module IpcAuthpipe
 
       ipc = IpcAuthpipe::Processor.new
       while (line = IpcAuthpipe::Reader.getline) do
-        puts ipc.process(line.strip) unless line.strip.empty?
+        reply = ipc.process(line.strip) unless line.strip.empty?
+        Log::debug "Reply is: #{reply.inspect}"
+        STDOUT.puts reply
+        STDOUT.flush
       end
     end
 
