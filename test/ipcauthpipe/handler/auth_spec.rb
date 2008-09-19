@@ -16,35 +16,35 @@ describe "AUTH handler" do
   end
 
   it "should read given number of bytes from the input stream and pass them onto the analyzer splitted into an array" do
-    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(23).and_return("login \n vasya \n parol ")
+    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(29).and_return("imap \nlogin \n vasya \n parol ")
     # we're expecting array as an argument for auth_method
     @auth.should_receive(:auth_method).once.with( duck_type(:is_array) )
-    @auth.getdata(23)
+    @auth.getdata(29)
   end
 
   it "should raise ArgumentError exception on invalid payload" do
-    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(27).and_return("login \n vasya \n parol \n wtf")
-    lambda { @auth.getdata(27) }.should raise_error(ArgumentError)
+    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(33).and_return("imap \nlogin \n vasya \n parol \n wtf")
+    lambda { @auth.getdata(33) }.should raise_error(ArgumentError)
   end
 
   it "should properly handle both CR-delimited and non-CR-delimited payloads" do
-    @auth.should_receive(:auth_method).twice.with(['login', 'vasya', 'parol'])
+    @auth.should_receive(:auth_method).twice.with(['imap', 'login', 'vasya', 'parol'])
 
-    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(23).and_return("login \n vasya \n parol ")
-    @auth.getdata(23)
+    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(29).and_return("imap \nlogin \n vasya \n parol ")
+    @auth.getdata(29)
 
-    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(24).and_return("login \n vasya \n parol \n")
-    @auth.getdata(24)
+    IpcAuthpipe::Reader.should_receive(:getbytes).once.with(30).and_return("imap \nlogin \n vasya \n parol \n")
+    @auth.getdata(30)
   end
 
   it "should convert LOGIN's payload into a hash with username and password" do
-    @auth.auth_method( ['login', 'vasya', 'parol'] ).should == { 
+    @auth.auth_method( ['imap', 'login', 'vasya', 'parol'] ).should == {
       :method => 'login', :username => 'vasya', :password => 'parol'
     }
   end
 
   it "should convert CRAM's payload into a hash with challenge and response" do
-    @auth.auth_method( ['cram-md5', 'vasya', 'parol'] ).should == {
+    @auth.auth_method( ['imap', 'cram-md5', 'vasya', 'parol'] ).should == {
       :method => 'cram-md5', :challenge => 'vasya', :response => 'parol'
     }
   end

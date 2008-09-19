@@ -19,8 +19,10 @@ module IpcAuthpipe
       # them up into a hash of parameters ready for further processing
       def getdata(count)
         Log.debug "Reading [#{count}] bytes from input stream"
-        splits = Reader::getbytes(count).strip.split(/\s+/m)
-        raise ArgumentError, 'Invalid AUTH payload' unless splits.size == 3
+        payload = Reader::getbytes(count)
+        Log.debug "AUTH payload is #{payload}"
+        splits = payload.strip.split(/\s+/m)
+        raise ArgumentError, 'Invalid AUTH payload' unless splits.size == 4
 
         Log.debug "Analyzing splits [#{splits.inspect}]"
         auth_method(splits)
@@ -30,11 +32,11 @@ module IpcAuthpipe
       # of :method, :username and :password for LOGIN authentication and
       # :method, :challenge and :response for CRAM-style authentications
       def auth_method(splits)
-        result = { :method => splits[0].strip.downcase }
+        result = { :method => splits[1].strip.downcase }
         result.merge!(
           result[:method] == 'login' ?
-            { :username => splits[1].strip, :password => splits[2].strip } :
-            { :challenge => splits[1].strip, :response => splits[2].strip }
+            { :username => splits[2].strip.split(/\@/)[0], :password => splits[3].strip } :
+            { :challenge => splits[2].strip, :response => splits[3].strip }
         )
         
         Log.debug "Converted splits into [#{result.inspect}]"
