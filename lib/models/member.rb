@@ -15,9 +15,10 @@ class Member < ActiveRecord::Base
   def to_authpipe
     IpcAuthpipe::Log.debug "Dumping authpipe string for member data #{inspect}"
     stringdump = [
-      "USERNAME=#{IpcAuthpipe::config.mail['owner_username']}",
+      "UID=#{IpcAuthpipe::config.mail['owner_uid']}",
       "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
-      "HOME=#{IpcAuthpipe::config.mail['home_dir'] % name}",
+      "HOME=#{IpcAuthpipe::config.mail['home_dir'] % name}/",
+      "MAILDIR=#{IpcAuthpipe::config.mail['home_dir'] % name}/",
       "ADDRESS=#{IpcAuthpipe::config.mail['address_format'] % name}",
       "."
     ].join("\n")+"\n"
