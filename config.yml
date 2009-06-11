@@ -1,9 +1,9 @@
 database:
   adapter: mysql
   database: pokerru_mail
-  username: root
+  username: toor
   password: Awycehe2iS
-  socket: /var/run/mysqld/mysqld.sock
+  socket: /tmp/mysql.sock
 
 log:
   level: debug
@@ -15,5 +15,7 @@ invision:
 mail:
   address_format: %s@poker.ru
   owner_uid: 2001
+  owner_name: vmail
   owner_gid: 1000
+  owner_group: virtualusers
   home_dir: /tmp/%s

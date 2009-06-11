@@ -18,7 +18,11 @@ class Member < ActiveRecord::Base
   
   # Create user's home dir if it's not present
   def create_homedir
-    FileUtils.mkdir(member.homedir, :mode => '0755') unless File.exists?(member.homedir)
+    unless File.exists?(homedir)
+      FileUtils.mkdir_p(homedir, :mode => 0750)
+      FileUtils.chown(IpcAuthpipe::config.mail['owner_name'], IpcAuthpipe::config.mail['owner_group'], "#{homedir}/..")
+      FileUtils.chown(IpcAuthpipe::config.mail['owner_name'], IpcAuthpipe::config.mail['owner_group'], homedir)
+    end
   end
 
   def to_authpipe
