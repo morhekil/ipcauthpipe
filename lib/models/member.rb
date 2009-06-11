@@ -11,14 +11,23 @@ class Member < ActiveRecord::Base
 
     member
   end
+  
+  def homedir
+    IpcAuthpipe::config.mail['home_dir'] % "#{name[0..0]}/#{name}"
+  end
+  
+  # Create user's home dir if it's not present
+  def create_homedir
+    FileUtils.mkdir(member.homedir, :mode => '0755') unless File.exists?(member.homedir)
+  end
 
   def to_authpipe
     IpcAuthpipe::Log.debug "Dumping authpipe string for member data #{inspect}"
     stringdump = [
       "UID=#{IpcAuthpipe::config.mail['owner_uid']}",
       "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
-      "HOME=#{IpcAuthpipe::config.mail['home_dir'] % name}/",
-      "MAILDIR=#{IpcAuthpipe::config.mail['home_dir'] % name}/",
+      "HOME=#{homedir}/",
+      "MAILDIR=#{homedir}/",
       "ADDRESS=#{IpcAuthpipe::config.mail['address_format'] % name}",
       "."
     ].join("\n")+"\n"

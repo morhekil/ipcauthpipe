@@ -47,8 +47,8 @@ describe 'Member' do
     member.to_authpipe.should == [
       "UID=#{IpcAuthpipe::config.mail['owner_uid']}",
       "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
-      "HOME=/home/vmail/tester/",
-      "MAILDIR=/home/vmail/tester/",
+      "HOME=/home/vmail/t/tester/",
+      "MAILDIR=/home/vmail/t/tester/",
       "ADDRESS=tester@poker.ru",
       "."
     ].join("\n") + "\n"

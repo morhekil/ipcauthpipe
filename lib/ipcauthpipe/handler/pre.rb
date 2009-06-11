@@ -21,6 +21,7 @@ module IpcAuthpipe
       # Finds member by his username and dumps his details, returns FAIL if not member were found
       def user_details(request)
         member = Member.find_by_name(request[:username])
+        member.create_homedir unless member.nil? # make sure the homedir exists
 
         member.nil? ? "FAIL\n" : member.to_authpipe
       end

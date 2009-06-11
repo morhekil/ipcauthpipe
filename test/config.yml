@@ -1,9 +1,9 @@
 database:
   adapter: mysql
   database: pokerru_mail_test
-  username: root
+  username: toor
   password: Awycehe2iS
-  socket: /var/run/mysqld/mysqld.sock
+  socket: /tmp/mysql.sock
 
 log:
   level: debug

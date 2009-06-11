@@ -71,7 +71,9 @@ module IpcAuthpipe
       # LOGIN type authentication handler
       def validate_with_login(authdata)
         Log.debug "Authenticating through type LOGIN with #{authdata.inspect}"
-        Member.find_by_name_and_password(authdata[:username], authdata[:password]).to_authpipe
+        member = Member.find_by_name_and_password(authdata[:username], authdata[:password])
+        member.create_homedir # make sure that homedir is created
+        member.to_authpipe # and return the details
       end
     end
 
