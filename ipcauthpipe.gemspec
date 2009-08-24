@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "ipcauthpipe"
-  s.version  = "0.2.2"
-  s.date     = "2009-06-11"
+  s.version  = "0.2.3"
+  s.date     = "2009-08-24"
   s.summary  = "Implementation of Courier's authpipe protocol over Invision Power Board / Converge."
   s.description = "ipcauthpipe gem implements Courier's authpipe protocol to interface Courier POP/IMAP server with Invision Power Board / Converge members database."
   s.has_rdoc = false

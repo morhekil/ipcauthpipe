@@ -13,15 +13,18 @@ class Member < ActiveRecord::Base
   end
   
   def homedir
-    IpcAuthpipe::config.mail['home_dir'] % "#{name[0..0]}/#{name}"
+    (IpcAuthpipe::config.mail['home_dir'] % "#{name[0..0]}/#{name}").downcase
   end
   
   # Create user's home dir if it's not present
   def create_homedir
     unless File.exists?(homedir)
       FileUtils.mkdir_p(homedir, :mode => 0750)
+      FileUtils.mkdir_p("#{homedir}/cur", :mode => 0750)
+      FileUtils.mkdir_p("#{homedir}/new", :mode => 0750)
+      FileUtils.mkdir_p("#{homedir}/tmp", :mode => 0750)
       FileUtils.chown(IpcAuthpipe::config.mail['owner_name'], IpcAuthpipe::config.mail['owner_group'], "#{homedir}/..")
-      FileUtils.chown(IpcAuthpipe::config.mail['owner_name'], IpcAuthpipe::config.mail['owner_group'], homedir)
+      FileUtils.chown_R(IpcAuthpipe::config.mail['owner_name'], IpcAuthpipe::config.mail['owner_group'], homedir)
     end
   end
 
@@ -32,7 +35,7 @@ class Member < ActiveRecord::Base
       "GID=#{IpcAuthpipe::config.mail['owner_gid']}",
       "HOME=#{homedir}/",
       "MAILDIR=#{homedir}/",
-      "ADDRESS=#{IpcAuthpipe::config.mail['address_format'] % name}",
+      "ADDRESS=#{(IpcAuthpipe::config.mail['address_format'] % name).downcase}",
       "."
     ].join("\n")+"\n"
     IpcAuthpipe::Log.debug "Authpipe dump: #{stringdump.inspect}"

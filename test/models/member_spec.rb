@@ -41,7 +41,7 @@ describe 'Member' do
 
   it "should dump itself into text string for authlib" do
     member = Member.new(
-      :name => 'tester'
+      :name => 'Tester'
     )
 
     member.to_authpipe.should == [
