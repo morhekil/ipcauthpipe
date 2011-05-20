@@ -1,40 +1,40 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-require 'activerecord'
+require 'active_record'
 require 'models/member'
 require 'models/member_converge'
 
-describe 'Member' do
+describe Member do
 
   before(:all) do
-    IpcAuthpipe::Log.logger = stub_everything
+    IpcAuthpipe::Log.logger = stub('stub').as_null_object
   end
 
   before(:each) do
     Member.delete_all
-    @tester_converge = mock('member_converge') #,
+    @tester = mock('member', :kind_of? => true) #,
     @member = Member.create(:email => 'test@test.com', :name => 'tester')
-    MemberConverge.stub!(:find).and_return(@tester_converge)
       #:pass_hash => '3a063c7f0d62df2ff444ca22455a7232', :pass_salt => '/yU(t') # password is 'testtest'
   end
 
   it "should find a member by his username and cleartext password" do
-    MemberConverge.should_receive(:find).once.and_return(@tester_converge)
-    @tester_converge.should_receive(:valid_password?).with('testtest').once.and_return(true)
+    Member.should_receive(:find_by_name).once.with(@member.name).and_return(@tester)
+    @tester.should_receive(:valid_password?).with('testtest').once.and_return(true)
+    @tester.should_receive(:has_mail_access?).once.and_return(true)
 
-    Member.find_by_name_and_password( @member.name, 'testtest' ).should == @member
+    Member.find_by_name_and_password( @member.name, 'testtest' ).should == @tester
   end
 
   it "should raise AuthenticationFailed exception on invalid password" do
-    MemberConverge.should_receive(:find).once.and_return(@tester_converge)
-    @tester_converge.should_receive(:valid_password?).with('wrongpassword').once.and_return(false)
+    Member.should_receive(:find).once.and_return(@tester)
+    @tester.should_receive(:valid_password?).with('wrongpassword').once.and_return(false)
 
     lambda { Member.find_by_name_and_password( @member.name, 'wrongpassword' ) }.should raise_error(IpcAuthpipe::AuthenticationFailed)
   end
 
   it "should raise AuthenticationFailed exception on invalid username" do
     MemberConverge.should_receive(:find).never
-    @tester_converge.should_receive(:valid_password?).never
+    @tester.should_receive(:valid_password?).never
 
     lambda { Member.find_by_name_and_password( 'foobarname', 'wrongpassword' ) }.should raise_error(IpcAuthpipe::AuthenticationFailed)
   end
@@ -54,4 +54,25 @@ describe 'Member' do
     ].join("\n") + "\n"
   end
 
+  describe 'password validation' do
+
+    before(:each) do
+      salt = '/yU(t'
+      password = 'testtest'
+      @member = Member.new(
+        # password is testtest
+        :members_pass_hash => Digest::MD5.hexdigest(
+            Digest::MD5.hexdigest(salt) + Digest::MD5.hexdigest(password)
+          ),
+        :members_pass_salt => salt
+      )
+    end
+
+    it "should verify cleartext password against hashed one" do
+      @member.valid_password?('foobar').should == false
+      @member.valid_password?('testtest').should == true
+    end
+
+  end
 end
+

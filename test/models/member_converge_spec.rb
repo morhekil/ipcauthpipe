@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-require 'activerecord'
+require 'active_record'
 require 'models/member_converge'
 
 describe 'Member Converge' do
