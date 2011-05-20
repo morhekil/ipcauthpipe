@@ -1,8 +1,10 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'rubygems'
-require 'activerecord'
+require 'active_record'
 require 'ostruct'
+
+require 'fileutils'
 
 require 'ipcauthpipe/processor'
 require 'ipcauthpipe/handler'
