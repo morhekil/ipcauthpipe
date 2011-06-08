@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "ipcauthpipe"
-  s.version  = "0.2.6"
-  s.date     = "2011-05-20"
+  s.version  = "0.2.8"
+  s.date     = "2011-06-11"
   s.summary  = "Implementation of Courier's authpipe protocol over Invision Power Board / Converge."
   s.description = "ipcauthpipe gem implements Courier's authpipe protocol to interface Courier POP/IMAP server with Invision Power Board / Converge members database."
   s.has_rdoc = false
@@ -42,5 +42,6 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib'
 
-  s.add_dependency("activerecord", ">= 2.1.0")
+  s.add_dependency("activerecord", "~> 2.3.8")
+  s.add_dependency("mysql")
 end
