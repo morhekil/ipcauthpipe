@@ -42,6 +42,6 @@ Gem::Specification.new do |s|
 
   s.require_path = 'lib'
 
-  s.add_dependency("activerecord", "~> 2.3.8")
+  s.add_dependency("activerecord", ">= 2.3.8", "< 7.1.0")
   s.add_dependency("mysql")
 end
